@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Ferien-Progress</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-  
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     body {
       background-color: black;
@@ -15,67 +18,89 @@
       font-family: 'Nunito', sans-serif;
       text-align: center;
       padding-top: 100px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
     .bar-container {
       width: 80%;
+      max-width: 600px;
       height: 40px;
       border: 2px solid white;
-      margin: 0 auto;
       overflow: hidden;
       border-radius: 4px;
+      margin: 0 auto;
     }
     .bar-fill {
       height: 100%;
       width: 0%;
       background-color: white;
+      transition: width 0.3s ease;
     }
     #percent {
-      margin-top: 30px;
-      font-size: 2em;
+      margin-top: 40px;
+      font-size: 2.5em;
+      line-height: 1.2;
+      max-width: 90%;
+    }
+
+    /* Адаптив для телефонов */
+    @media (max-width: 480px) {
+      .bar-container {
+        width: 90%;
+        height: 35px;
+      }
+      #percent {
+        margin-top: 50px;
+        font-size: 3em;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="bar-container">
+    <div class="bar-fill" id="bar"></div>
+  </div>
+  <div id="percent">0%</div>
 
-<div class="bar-container">
-  <div class="bar-fill" id="bar"></div>
-</div>
-<div id="percent">0%</div>
+  <script>
+    const startDate = new Date(2025, 6, 5);
+    const endDate = new Date(2025, 8, 8);
+    const today = new Date();
 
-<script>
-  const startDate = new Date(2025, 6, 5);
-  const endDate = new Date(2025, 8, 8);
-  const today = new Date();
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const totalDays = Math.round((endDate - startDate) / msPerDay) + 1;
 
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const totalDays = Math.round((endDate - startDate) / msPerDay) + 1;
-
-  let daysPassed = 0;
-  if (today >= startDate) {
-    daysPassed = Math.floor((today - startDate) / msPerDay) + 1;
-  }
-
-  const percent = Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
-
-  const bar = document.getElementById("bar");
-  const percentDisplay = document.getElementById("percent");
-
-  let current = 0;
-  const step = 0.02;
-  const interval = 40;
-
-  const intervalId = setInterval(() => {
-    if (current <= percent) {
-      bar.style.width = current + "%";
-      percentDisplay.textContent = "Die Ferien sind zu " + current.toFixed(1) + " % vorbei";
-      current += step;
-    } else {
-      bar.style.width = percent.toFixed(1) + "%";
-      percentDisplay.textContent = "Die Ferien sind zu " + percent.toFixed(1) + " % vorbei";
-      clearInterval(intervalId);
+    let daysPassed = 0;
+    if (today >= startDate) {
+      daysPassed = Math.floor((today - startDate) / msPerDay) + 1;
     }
-  }, interval);
-</script>
 
+    const percent = Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
+
+    const bar = document.getElementById('bar');
+    const percentDisplay = document.getElementById('percent');
+
+    let current = 0;
+    const step = 0.02;
+    const interval = 40;
+
+    const intervalId = setInterval(() => {
+      if (current <= percent) {
+        bar.style.width = current + '%';
+        percentDisplay.textContent =
+          'Die Ferien sind zu ' + current.toFixed(1) + ' % vorbei';
+        current += step;
+      } else {
+        bar.style.width = percent.toFixed(1) + '%';
+        percentDisplay.textContent =
+          'Die Ferien sind zu ' + percent.toFixed(1) + ' % vorbei';
+        clearInterval(intervalId);
+      }
+    }, interval);
+  </script>
 </body>
 </html>
