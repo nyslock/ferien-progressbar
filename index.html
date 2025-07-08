@@ -3,14 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Ferien-Progress</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-    rel="stylesheet"
-  />
-
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     html, body {
       margin: 0;
@@ -19,16 +14,17 @@
       color: white;
       font-family: 'Nunito', sans-serif;
     }
+
     body {
       display: flex;
       flex-direction: column;
-      justify-content: center; /* вертикальное центрирование */
-      align-items: center;     /* горизонтальное центрирование */
-      height: 100vh;           /* 100% высоты окна */
+      justify-content: center;
+      align-items: center;
       text-align: center;
       padding: 0 20px;
       box-sizing: border-box;
     }
+
     .bar-container {
       width: 90%;
       max-width: 650px;
@@ -38,12 +34,13 @@
       border-radius: 6px;
       margin: 0 auto;
     }
+
     .bar-fill {
       height: 100%;
       width: 0%;
       background-color: white;
-      transition: width 0.3s ease;
     }
+
     #percent {
       margin-top: 40px;
       font-size: 2.5em;
@@ -51,11 +48,11 @@
       max-width: 90%;
     }
 
-    /* Адаптив для телефонов */
     @media (max-width: 480px) {
       .bar-container {
         height: 45px;
       }
+
       #percent {
         margin-top: 50px;
         font-size: 3em;
@@ -70,8 +67,9 @@
   <div id="percent">0%</div>
 
   <script>
-    const startDate = new Date(2025, 6, 5);
-    const endDate = new Date(2025, 8, 8);
+    // Start- und Enddatum der Ferien
+    const startDate = new Date(2025, 6, 5);  // 5. Juli 2025
+    const endDate = new Date(2025, 8, 8);    // 8. September 2025
     const today = new Date();
 
     const msPerDay = 1000 * 60 * 60 * 24;
@@ -87,23 +85,26 @@
     const bar = document.getElementById('bar');
     const percentDisplay = document.getElementById('percent');
 
-    let current = 0;
-    const step = 0.02;
-    const interval = 40;
+    const duration = 6000; // 6 Sekunden
+    const startTime = performance.now();
 
-    const intervalId = setInterval(() => {
-      if (current <= percent) {
-        bar.style.width = current + '%';
-        percentDisplay.textContent =
-          'Die Ferien sind zu ' + current.toFixed(1) + ' % vorbei';
-        current += step;
-      } else {
-        bar.style.width = percent.toFixed(1) + '%';
-        percentDisplay.textContent =
-          'Die Ferien sind zu ' + percent.toFixed(1) + ' % vorbei';
-        clearInterval(intervalId);
+    function animate(time) {
+      const elapsed = time - startTime;
+      const t = Math.min(1, elapsed / duration); // 0 bis 1
+
+      // Sanfte exponentielle Ease-Out-Funktion (schnell → langsamer, aber nicht zu langsam)
+      const easedT = 1 - Math.pow(2, -6 * t);
+
+      const current = percent * easedT;
+      bar.style.width = current + '%';
+      percentDisplay.textContent = 'Die Ferien sind zu ' + current.toFixed(1) + ' % vorbei';
+
+      if (t < 1) {
+        requestAnimationFrame(animate);
       }
-    }, interval);
+    }
+
+    requestAnimationFrame(animate);
   </script>
 </body>
 </html>
