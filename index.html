@@ -86,25 +86,20 @@
     const percentDisplay = document.getElementById('percent');
 
     const duration = 6000; // 6 Sekunden
-    const startTime = performance.now();
+    const fps = 60;
+    const steps = duration / (1000 / fps);
+    const increment = percent / steps;
+    let current = 0;
 
-    function animate(time) {
-      const elapsed = time - startTime;
-      const t = Math.min(1, elapsed / duration); // 0 bis 1
-
-      // Sanfte exponentielle Ease-Out-Funktion (schnell → langsamer, aber nicht zu langsam)
-      const easedT = 1 - Math.pow(2, -6 * t);
-
-      const current = percent * easedT;
+    const interval = setInterval(() => {
+      current += increment;
+      if (current >= percent) {
+        current = percent;
+        clearInterval(interval);
+      }
       bar.style.width = current + '%';
       percentDisplay.textContent = 'Die Ferien sind zu ' + current.toFixed(1) + ' % vorbei';
-
-      if (t < 1) {
-        requestAnimationFrame(animate);
-      }
-    }
-
-    requestAnimationFrame(animate);
+    }, 1000 / fps);
   </script>
 </body>
 </html>
