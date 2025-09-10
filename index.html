@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Ferien-Progress</title>
+  <title>Schul-Progress</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
@@ -67,9 +67,9 @@
   <div id="percent">0%</div>
 
   <script>
-    // Start- und Enddatum der Ferien
-    const startDate = new Date(2025, 6, 5);  // 5. Juli 2025
-    const endDate = new Date(2025, 8, 8);    // 8. September 2025
+    // Start- und Enddatum der Schule
+    const startDate = new Date(2025, 8, 8);  // 8. September 2025
+    const endDate = new Date(2026, 6, 10);   // 10. Juli 2026
     const today = new Date();
 
     const msPerDay = 1000 * 60 * 60 * 24;
@@ -85,7 +85,7 @@
     const bar = document.getElementById('bar');
     const percentDisplay = document.getElementById('percent');
 
-    const duration = 6000; // 6 Sekunden
+    const duration = 6000; // 6 Sekunden Animation
     const fps = 60;
     const steps = duration / (1000 / fps);
     const increment = percent / steps;
@@ -98,7 +98,7 @@
         clearInterval(interval);
       }
       bar.style.width = current + '%';
-      percentDisplay.textContent = 'Die Ferien sind zu ' + current.toFixed(1) + ' % vorbei';
+      percentDisplay.textContent = 'Das Schuljahr ist zu ' + current.toFixed(1) + ' % vorbei';
     }, 1000 / fps);
   </script>
 </body>
